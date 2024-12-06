@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSS Complete the Code</title>
+    <script src="script.js" defer></script>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #f4f4f4;
+        text-align: center;
+      }
+
+      h1,
+      h2 {
+        margin: 0.4rem 0;
+      }
+
+      .question {
+        font-size: 18px;
+        margin: 20px auto;
+        text-align: center;
+        max-width: 70%;
+      }
+
+      .container {
+        display: flex;
+        justify-content: space-evenly;
+        flex-direction: column;
+      }
+
+      .drag-container {
+        display: flex;
+        justify-content: center;
+        width: fit-content;
+        height: 100px;
+        margin: 0 auto;
+      }
+
+      .drop-container{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .draggable-items {
+        display: flex;
+        flex-direction: row;
+        margin: 5px;
+      }
+
+      .drop-zone {
+        width: 800px;
+        height: 100px;
+        margin: 10px auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+      }
+
+      .drop-zone .drop-box {
+        background: transparent;
+        border: none;
+        width: 200px;
+        height: 100px;
+        border: 2px dashed #ccc;
+      }
+
+      .drop-zone .text {
+        background: transparent;
+        border: none;
+        width: 200px;
+        height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background-color: #333;
+        color: #f4f4f4;
+        border-radius: 8px;
+        font-family: "Courier New", Courier, monospace;
+        font-size: 16px;
+      }
+
+      .draggable {
+        width: 200px;
+        height: 100px;
+        /* background-color: #f0f0f0; */
+        border: 1px solid #ccc;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: move;
+        margin: 0 5px;
+
+        background-color: #333333;
+        color: #f4f4f4;
+        border-radius: 8px;
+        font-family: "Courier New", Courier, monospace;
+        font-size: 16px;
+      }
+
+      .drop-box .draggable {
+        border: none;
+        margin: 0px;
+      }
+
+      .dragging {
+        opacity: 0.5;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="question">
+      <p>
+        You are designing a website for Margie"™s Travel. The website uses
+        external stylesheets. You need to create a style that centers all h1
+        elements on the page. How should you complete the code?
+      </p>
+
+      <p>
+        To answer, drag the appropriate code segment to the correct location in
+        the code. Each code segment may be used once, more than once or not at
+        all. You may need to drag the split bar between panes or scroll to view
+        content.
+      </p>
+      <p>
+        To answer, drag the appropriate CSS selector to the correct locations.
+        Each selector may be used once, more than once, or not at all.
+      </p>
+    </div>
+    <div class="container">
+      <div class="drop-container">
+        <div class="drop-zone" id="box1">
+          <div class="drop-box"></div>
+          
+        </div>{
+        <div class="drop-zone" id="box2">
+          <div class="drop-box"></div>
+         
+        </div>
+        <div class="drop-zone" id="box3">
+          <div class="drop-box"></div>
+          
+        </div>
+        <div class="drop-zone" id="box4">
+          <div class="drop-box"></div>
+        
+        </div>
+        <div class="drop-zone" id="box5">
+          <div class="drop-box"></div>
+        
+        </div>}
+      </div>
+
+      <br />
+      <br />
+      <!-- <h2>Drag items</h2> -->
+      <div class="drag-container">
+        <div class="draggable" draggable="true" id="text-align">text-align</div>
+        <div class="draggable" draggable="true" id="center">center</div>
+        <div class="draggable" draggable="true" id="h1">h1</div>
+        <div class="draggable" draggable="true" id="equalSign">=</div>
+        <div class="draggable" draggable="true" id="colon">:</div>
+        <div class="draggable" draggable="true" id="semicolon">;</div>
+        <div class="draggable" draggable="true" id="classh1">.h1</div>
+      </div>
+    </div>
+
+    <div class="buttons">
+      <button id="prevBtn">Prev</button>
+      <button id="nextBtn">Next</button>
+    </div>
+
+    <script>
+      const draggables = document.querySelectorAll(".draggable");
+      const dropBoxes = document.querySelectorAll(".drop-box");
+
+      draggables.forEach((draggable) => {
+        draggable.addEventListener("dragstart", (e) => {
+          draggable.classList.add("dragging");
+          e.dataTransfer.setData("text/plain", draggable.id);
+        });
+
+        draggable.addEventListener("dragend", () => {
+          draggable.classList.remove("dragging");
+        });
+      });
+
+      dropBoxes.forEach((dropBox) => {
+        dropBox.addEventListener("dragover", (e) => {
+          e.preventDefault();
+          dropBox.classList.add("over");
+        });
+
+        dropBox.addEventListener("dragleave", () => {
+          dropBox.classList.remove("over");
+        });
+
+        dropBox.addEventListener("drop", (e) => {
+          e.preventDefault();
+          dropBox.classList.remove("over");
+
+          const draggableId = e.dataTransfer.getData("text/plain");
+          const originalDraggable = document.getElementById(draggableId);
+
+          if (!dropBox.querySelector(`#${draggableId}`)) {
+            const clone = originalDraggable.cloneNode(true);
+            clone.classList.remove("dragging");
+            clone.draggable = false;
+            dropBox.innerHTML = "";
+            dropBox.appendChild(clone);
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
